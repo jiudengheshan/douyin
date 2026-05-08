@@ -31,6 +31,7 @@ export default function HomePage() {
   const today = useMemo(() => formatDate(new Date()), []);
   const [activeSlide, setActiveSlide] = useState(0);
   const [bookingDate, setBookingDate] = useState(today);
+  const [arrivalTime, setArrivalTime] = useState("10:30");
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
@@ -53,6 +54,7 @@ export default function HomePage() {
     setNotice(`${name}，已收到 ${date} ${time} 的「${service}」预约，请保持电话畅通。`);
     form.reset();
     setBookingDate(today);
+    setArrivalTime("10:30");
   };
 
   return (
@@ -273,6 +275,10 @@ export default function HomePage() {
           </div>
 
           <form className="form" id="bookingForm" onSubmit={handleSubmit}>
+            <div className="field">
+              <label htmlFor="note">宠物情况</label>
+              <textarea id="note" name="note" placeholder="例如：体重、毛量、是否怕水、是否打结" />
+            </div>
             <div className="form-row">
               <div className="field">
                 <label htmlFor="name">联系人</label>
@@ -317,19 +323,20 @@ export default function HomePage() {
                 />
               </div>
               <div className="field">
-                <label htmlFor="time">到店时间</label>
-                <select id="time" name="time">
-                  <option>10:30</option>
-                  <option>12:00</option>
-                  <option>14:00</option>
-                  <option>16:00</option>
-                  <option>18:30</option>
-                </select>
+                <label htmlFor="time">期望到店时间</label>
+                <input
+                  id="time"
+                  name="time"
+                  type="time"
+                  min="10:00"
+                  max="19:30"
+                  step="1800"
+                  value={arrivalTime}
+                  onChange={(event) => setArrivalTime(event.target.value)}
+                  required
+                />
+                <span className="field-hint">可选 10:00 - 19:30，提交后前台会电话确认。</span>
               </div>
-            </div>
-            <div className="field">
-              <label htmlFor="note">宠物情况</label>
-              <textarea id="note" name="note" placeholder="例如：体重、毛量、是否怕水、是否打结" />
             </div>
             <button className="button" type="submit">
               提交预约
