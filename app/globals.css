@@ -249,18 +249,27 @@ section {
   line-height: 1.75;
 }
 
+.service-carousel {
+  overflow: hidden;
+  --service-step: calc((100% - 48px) / 4 + 16px);
+}
+
 .services {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
   gap: 16px;
+  transition: margin-left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: margin-left;
 }
 
 .service {
+  flex: 0 0 calc((100% - 48px) / 4);
   padding: 22px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--white);
-  min-height: 210px;
+  min-height: 286px;
+  display: flex;
+  flex-direction: column;
 }
 
 .service-icon {
@@ -286,6 +295,54 @@ section {
   color: var(--muted);
   line-height: 1.65;
   font-size: 15px;
+}
+
+.service ul {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.service li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.service li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: var(--coral);
+}
+
+.service-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.service-dot {
+  width: 28px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(38, 121, 97, 0.22);
+  cursor: pointer;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.service-dot.is-active {
+  width: 44px;
+  background: var(--mint-dark);
 }
 
 .split-band {
@@ -590,8 +647,12 @@ footer strong {
     min-height: 420px;
   }
 
-  .services {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .service {
+    flex-basis: calc((100% - 16px) / 2);
+  }
+
+  .service-carousel {
+    --service-step: calc((100% - 16px) / 2 + 16px);
   }
 
   .price-grid {
@@ -621,9 +682,16 @@ footer strong {
   }
 
   .proof,
-  .services,
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .service {
+    flex-basis: 100%;
+  }
+
+  .service-carousel {
+    --service-step: calc(100% + 16px);
   }
 
   .section-head {

@@ -20,6 +20,57 @@ const slides = [
   },
 ];
 
+const serviceItems = [
+  {
+    icon: "浴",
+    title: "香氛净洗",
+    summary: "温水冲洗、专用浴液、护毛素、吹干梳顺，适合日常清洁维护。",
+    details: ["皮毛状态检查", "低刺激浴液", "蓬松吹干"],
+  },
+  {
+    icon: "剪",
+    title: "精致造型",
+    summary: "脸部、脚底、腹底、尾部造型修剪，保留宠物自然轮廓和舒适活动空间。",
+    details: ["圆脸修剪", "脚底腹底修整", "尾型整理"],
+  },
+  {
+    icon: "爪",
+    title: "基础护理",
+    summary: "剪指甲、剃脚毛、清耳、洁眼、肛门腺护理，可单项加购。",
+    details: ["指甲打磨", "耳眼清洁", "肛门腺护理"],
+  },
+  {
+    icon: "护",
+    title: "皮毛调理",
+    summary: "针对换毛、打结、干燥和敏感皮肤，提供去浮毛和深层护理方案。",
+    details: ["去浮毛", "开结梳理", "护毛滋养"],
+  },
+  {
+    icon: "猫",
+    title: "猫咪低压洗护",
+    summary: "独立安静时段，减少噪音和等待，按猫咪情绪分段完成洗护。",
+    details: ["低风速吹干", "安抚休息", "防应激节奏"],
+  },
+  {
+    icon: "幼",
+    title: "幼宠初体验",
+    summary: "为第一次到店的幼犬幼猫设计短流程，建立对洗澡、吹风和触碰的安全感。",
+    details: ["短时适应", "轻柔梳洗", "行为引导"],
+  },
+  {
+    icon: "洁",
+    title: "口腔与泪痕清洁",
+    summary: "温和清洁口周、眼周和泪痕区域，适合浅色毛发或易流泪宠物。",
+    details: ["眼周湿敷", "口周清洁", "毛色维护"],
+  },
+  {
+    icon: "养",
+    title: "老年宠舒缓护理",
+    summary: "缩短站立时间，增加休息和保暖，适合年长、关节敏感或体力较弱的宠物。",
+    details: ["分段护理", "保暖吹干", "状态观察"],
+  },
+];
+
 const formatDate = (date: Date) => {
   const yyyy = date.getFullYear();
   const mm = String(date.getMonth() + 1).padStart(2, "0");
@@ -30,9 +81,12 @@ const formatDate = (date: Date) => {
 export default function HomePage() {
   const today = useMemo(() => formatDate(new Date()), []);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [activeService, setActiveService] = useState(0);
+  const [visibleServices, setVisibleServices] = useState(4);
   const [bookingDate, setBookingDate] = useState(today);
   const [arrivalTime, setArrivalTime] = useState("10:30");
   const [notice, setNotice] = useState("");
+  const maxServiceIndex = Math.max(0, serviceItems.length - visibleServices);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -41,6 +95,35 @@ export default function HomePage() {
 
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveService((current) => (current >= maxServiceIndex ? 0 : current + 1));
+    }, 3600);
+
+    return () => window.clearInterval(timer);
+  }, [maxServiceIndex]);
+
+  useEffect(() => {
+    const updateVisibleServices = () => {
+      if (window.matchMedia("(max-width: 720px)").matches) {
+        setVisibleServices(1);
+      } else if (window.matchMedia("(max-width: 980px)").matches) {
+        setVisibleServices(2);
+      } else {
+        setVisibleServices(4);
+      }
+    };
+
+    updateVisibleServices();
+    window.addEventListener("resize", updateVisibleServices);
+
+    return () => window.removeEventListener("resize", updateVisibleServices);
+  }, []);
+
+  useEffect(() => {
+    setActiveService((current) => Math.min(current, maxServiceIndex));
+  }, [maxServiceIndex]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -126,29 +209,34 @@ export default function HomePage() {
         <section id="services">
           <div className="section-head">
             <h2>常用洗护服务</h2>
-            <p>护理前先做皮毛检查，洗护中使用低刺激产品，结束后同步吹干、梳理和基础健康观察。</p>
+            <p>护理前先做皮毛检查，洗护中使用低刺激产品；从日常净洗到特殊护理，都按宠物体型、毛量和情绪调整节奏。</p>
           </div>
-          <div className="services">
-            <article className="service">
-              <div className="service-icon">浴</div>
-              <h3>香氛净洗</h3>
-              <p>温水冲洗、专用浴液、护毛素、吹干梳顺，适合日常清洁维护。</p>
-            </article>
-            <article className="service">
-              <div className="service-icon">剪</div>
-              <h3>精致造型</h3>
-              <p>脸部、脚底、腹底、尾部造型修剪，保留宠物自然轮廓和舒适活动空间。</p>
-            </article>
-            <article className="service">
-              <div className="service-icon">护</div>
-              <h3>基础护理</h3>
-              <p>剪指甲、剃脚毛、清耳、洁眼、肛门腺护理，可单项加购。</p>
-            </article>
-            <article className="service">
-              <div className="service-icon">调</div>
-              <h3>皮毛调理</h3>
-              <p>针对换毛、打结、干燥和敏感皮肤，提供去浮毛和深层护理方案。</p>
-            </article>
+          <div className="service-carousel" aria-label="常用洗护服务轮播">
+            <div className="services" style={{ marginLeft: `calc(-${activeService} * var(--service-step))` }}>
+              {serviceItems.map((service) => (
+                <article className="service" key={service.title}>
+                  <div className="service-icon">{service.icon}</div>
+                  <h3>{service.title}</h3>
+                  <p>{service.summary}</p>
+                  <ul>
+                    {service.details.map((detail) => (
+                      <li key={detail}>{detail}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+            <div className="service-controls" aria-label="切换洗护服务">
+              {serviceItems.slice(0, maxServiceIndex + 1).map((service, index) => (
+                <button
+                  className={`service-dot${index === activeService ? " is-active" : ""}`}
+                  type="button"
+                  aria-label={service.title}
+                  key={service.title}
+                  onClick={() => setActiveService(index)}
+                />
+              ))}
+            </div>
           </div>
         </section>
 
