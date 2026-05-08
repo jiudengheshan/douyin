@@ -267,6 +267,22 @@ export default function HomePage() {
                 <strong>门店地址</strong>
                 <span>上海市静安区花园路 88 号 1 层</span>
               </div>
+              <div className="store-map" aria-label="门店位置地图">
+                <iframe
+                  title="沐爪宠物洗护门店位置"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=121.446%2C31.221%2C121.471%2C31.239&layer=mapnik&marker=31.23%2C121.4585"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+                <a
+                  className="map-link"
+                  href="https://map.baidu.com/search/%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%9D%99%E5%AE%89%E5%8C%BA%E8%8A%B1%E5%9B%AD%E8%B7%AF%2088%20%E5%8F%B7"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  打开地图导航
+                </a>
+              </div>
               <div className="contact-item">
                 <strong>联系电话</strong>
                 <span>138-0000-8888</span>

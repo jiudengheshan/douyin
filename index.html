@@ -501,6 +501,44 @@
       color: var(--muted);
     }
 
+    .store-map {
+      position: relative;
+      min-height: 260px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 8px;
+      background: #d9eee8;
+      box-shadow: 0 14px 30px rgba(38, 121, 97, 0.12);
+    }
+
+    .store-map iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 260px;
+      border: 0;
+    }
+
+    .map-link {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(36, 35, 34, 0.88);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(36, 35, 34, 0.18);
+    }
+
+    .map-link:hover {
+      background: var(--mint-dark);
+    }
+
     .form {
       display: grid;
       gap: 14px;
@@ -822,6 +860,22 @@
           <div class="contact-item">
             <strong>门店地址</strong>
             <span>上海市静安区花园路 88 号 1 层</span>
+          </div>
+          <div class="store-map" aria-label="门店位置地图">
+            <iframe
+              title="沐爪宠物洗护门店位置"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=121.446%2C31.221%2C121.471%2C31.239&layer=mapnik&marker=31.23%2C121.4585"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <a
+              class="map-link"
+              href="https://map.baidu.com/search/%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%9D%99%E5%AE%89%E5%8C%BA%E8%8A%B1%E5%9B%AD%E8%B7%AF%2088%20%E5%8F%B7"
+              target="_blank"
+              rel="noreferrer"
+            >
+              打开地图导航
+            </a>
           </div>
           <div class="contact-item">
             <strong>联系电话</strong>
