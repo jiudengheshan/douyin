@@ -78,13 +78,22 @@ const formatDate = (date: Date) => {
   return `${yyyy}-${mm}-${dd}`;
 };
 
+const getTomorrow = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return tomorrow;
+};
+
+const defaultArrivalTime = "09:30";
+
 export default function HomePage() {
   const today = useMemo(() => formatDate(new Date()), []);
+  const tomorrow = useMemo(() => formatDate(getTomorrow()), []);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeService, setActiveService] = useState(0);
   const [visibleServices, setVisibleServices] = useState(4);
-  const [bookingDate, setBookingDate] = useState(today);
-  const [arrivalTime, setArrivalTime] = useState("10:30");
+  const [bookingDate, setBookingDate] = useState(tomorrow);
+  const [arrivalTime, setArrivalTime] = useState(defaultArrivalTime);
   const [notice, setNotice] = useState("");
   const maxServiceIndex = Math.max(0, serviceItems.length - visibleServices);
 
@@ -136,8 +145,8 @@ export default function HomePage() {
 
     setNotice(`${name}，已收到 ${date} ${time} 的「${service}」预约，请保持电话畅通。`);
     form.reset();
-    setBookingDate(today);
-    setArrivalTime("10:30");
+    setBookingDate(tomorrow);
+    setArrivalTime(defaultArrivalTime);
   };
 
   return (
@@ -196,7 +205,7 @@ export default function HomePage() {
             />
             <div className="floating-panel">
               <div>
-                <strong>今日可预约 10:30 - 19:30</strong>
+                <strong>明日可预约 09:30 - 19:30</strong>
                 <span>小型犬基础洗护约 60 分钟完成</span>
               </div>
               <a className="button alt" href="tel:13800008888">
@@ -349,7 +358,7 @@ export default function HomePage() {
             <div className="contact-list">
               <div className="contact-item">
                 <strong>营业时间</strong>
-                <span>周一至周日 10:00 - 20:00</span>
+                <span>周一至周日 09:30 - 20:00</span>
               </div>
               <div className="contact-item">
                 <strong>门店地址</strong>
@@ -432,14 +441,14 @@ export default function HomePage() {
                   id="time"
                   name="time"
                   type="time"
-                  min="10:00"
+                  min="09:30"
                   max="19:30"
                   step="1800"
                   value={arrivalTime}
                   onChange={(event) => setArrivalTime(event.target.value)}
                   required
                 />
-                <span className="field-hint">可选 10:00 - 19:30，提交后前台会电话确认。</span>
+                <span className="field-hint">可选 09:30 - 19:30，提交后前台会电话确认。</span>
               </div>
             </div>
             <button className="button" type="submit">
